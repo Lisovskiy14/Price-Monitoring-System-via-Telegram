@@ -1,4 +1,4 @@
-package com.example.price_monitoring_system;
+package com.example.price_monitoring_system.unit;
 
 import com.example.price_monitoring_system.service.ScraperService;
 import org.junit.jupiter.api.Test;

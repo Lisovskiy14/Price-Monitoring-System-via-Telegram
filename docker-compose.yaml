@@ -1,0 +1,11 @@
+services:
+   db:
+     image: postgres:16
+     container_name: price_monitoring_db
+     environment:
+       POSTGRES_DB: price_monitoring_db
+       POSTGRES_USER: postgres
+       POSTGRES_PASSWORD: postgres
+       TZ: UTC
+     ports:
+       - "5432:5432"

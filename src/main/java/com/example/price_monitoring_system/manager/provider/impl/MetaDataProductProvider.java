@@ -1,7 +1,7 @@
 package com.example.price_monitoring_system.manager.provider.impl;
 
 import com.example.price_monitoring_system.domain.Product;
-import com.example.price_monitoring_system.manager.HtmlDocumentProvider;
+import com.example.price_monitoring_system.utility.HtmlDocumentProvider;
 import com.example.price_monitoring_system.manager.provider.ProductProvider;
 import com.example.price_monitoring_system.utility.ProductParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

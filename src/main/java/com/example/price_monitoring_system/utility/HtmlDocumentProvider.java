@@ -1,4 +1,4 @@
-package com.example.price_monitoring_system.manager;
+package com.example.price_monitoring_system.utility;
 
 import com.example.price_monitoring_system.service.exception.ScraperConnectionFailedException;
 import org.jsoup.Jsoup;

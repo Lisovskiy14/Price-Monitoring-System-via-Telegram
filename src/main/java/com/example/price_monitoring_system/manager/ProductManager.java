@@ -1,6 +1,5 @@
 package com.example.price_monitoring_system.manager;
 
-import com.example.price_monitoring_system.domain.CssSelectorContainer;
 import com.example.price_monitoring_system.domain.Product;
 import com.example.price_monitoring_system.manager.exception.ProductNotFoundException;
 import com.example.price_monitoring_system.manager.provider.ProductProvider;

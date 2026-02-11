@@ -6,5 +6,5 @@ import lombok.Data;
 public class Shop {
     private Long id;
     private String domain;
-    private CssSelectorContainer cssSelectors;
+    private CssSelectorContainer cssSelectorContainer;
 }

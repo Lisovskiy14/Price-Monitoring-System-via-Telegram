@@ -13,12 +13,12 @@ import lombok.*;
 public class CssSelectorContainerEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "css_selector_container_seq_generator")
+    @SequenceGenerator(
+            name = "css_selector_container_seq_generator",
+            sequenceName = "css_selector_container_seq"
+    )
     private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "shop_id")
-    private ShopEntity shop;
 
     @Column(name = "name_selector")
     private String nameSelector;

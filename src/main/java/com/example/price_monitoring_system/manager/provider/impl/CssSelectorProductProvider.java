@@ -7,6 +7,7 @@ import com.example.price_monitoring_system.manager.provider.ProductProvider;
 import com.example.price_monitoring_system.repository.CssSelectorContainerRepository;
 import com.example.price_monitoring_system.repository.entity.CssSelectorContainerEntity;
 import com.example.price_monitoring_system.repository.mapper.CssSelectorContainerEntityMapper;
+import com.example.price_monitoring_system.utility.UrlDomainExtractor;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.net.URI;
 import java.util.Optional;
 
 @Order(20)
@@ -31,7 +31,7 @@ public class CssSelectorProductProvider implements ProductProvider {
     public Optional<Product> provide(String url) {
         Document doc = HtmlDocumentProvider.provideHtmlDoc(url);
 
-        String domain = extractDomain(url);
+        String domain = UrlDomainExtractor.extractDomain(url);
 
         CssSelectorContainerEntity selectorContainerEntity = containerRepository.findByShop_Domain(domain)
                 .orElse(null);
@@ -44,11 +44,6 @@ public class CssSelectorProductProvider implements ProductProvider {
                 .toCssSelectorContainer(selectorContainerEntity);
 
         return Optional.of(provideProductBySelectorContainer(doc, selectorContainer));
-    }
-
-    private String extractDomain(String url) {
-        URI uri = URI.create(url);
-        return uri.getHost();
     }
 
     private Product provideProductBySelectorContainer(Document doc, CssSelectorContainer cssSelectorContainer) {

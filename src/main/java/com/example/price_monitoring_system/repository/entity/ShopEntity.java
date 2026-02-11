@@ -23,23 +23,8 @@ public class ShopEntity {
     @Column(name = "domain", nullable = false, unique = true)
     private String domain;
 
-    @OneToOne(
-            mappedBy = "shop",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            orphanRemoval = true
-    )
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @JoinColumn(name = "css_selector_container_id")
     private CssSelectorContainerEntity cssSelectorContainer;
-
-    public void setCssSelectorContainer(CssSelectorContainerEntity container) {
-        if (container == null) {
-            if (this.cssSelectorContainer != null) {
-                this.cssSelectorContainer.setShop(null);
-            }
-        } else {
-            container.setShop(this);
-        }
-
-        this.cssSelectorContainer = container;
-    }
 
 }

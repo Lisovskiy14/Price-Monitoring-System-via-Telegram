@@ -10,6 +10,7 @@ import com.example.price_monitoring_system.service.ShopService;
 import com.example.price_monitoring_system.service.TrackedItemService;
 import com.example.price_monitoring_system.service.TrackingService;
 import com.example.price_monitoring_system.service.exception.ShopNotFoundException;
+import com.example.price_monitoring_system.utility.UrlDomainExtractor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,8 +35,7 @@ public class TrackingServiceImpl implements TrackingService {
             return trackedItemService.getTrackedItemByUrl(url);
         }
 
-        URI uri = URI.create(url);
-        String domain = uri.getHost();
+        String domain = UrlDomainExtractor.extractDomain(url);
         Shop shop;
         try {
             shop = shopService.getShopByDomain(domain);

@@ -3,12 +3,15 @@ package com.example.price_monitoring_system.service.impl;
 import com.example.price_monitoring_system.domain.Product;
 import com.example.price_monitoring_system.domain.Shop;
 import com.example.price_monitoring_system.domain.TrackedItem;
+import com.example.price_monitoring_system.domain.User;
 import com.example.price_monitoring_system.dto.TrackedItemRequestDto;
 import com.example.price_monitoring_system.manager.ScrapingManager;
 import com.example.price_monitoring_system.manager.exception.ProductNotFoundException;
 import com.example.price_monitoring_system.service.ShopService;
 import com.example.price_monitoring_system.service.TrackedItemService;
 import com.example.price_monitoring_system.service.TrackingService;
+import com.example.price_monitoring_system.service.exception.ScraperConnectionFailedException;
+import com.example.price_monitoring_system.service.exception.ScrapingProductFailedException;
 import com.example.price_monitoring_system.service.exception.ShopNotFoundException;
 import com.example.price_monitoring_system.utility.UrlDomainExtractor;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +35,10 @@ public class TrackingServiceImpl implements TrackingService {
     public TrackedItem registerTrackedItem(TrackedItemRequestDto trackedItemRequestDto) {
         String url = trackedItemRequestDto.getUrl();
         if (trackedItemService.existsByUrl(url)) {
-            return trackedItemService.getTrackedItemByUrl(url);
+            User newListener = User.builder()
+                    .id(trackedItemRequestDto.getListenerId())
+                    .build();
+            return updateTrackedItemListeners(url, newListener);
         }
 
         String domain = UrlDomainExtractor.extractDomain(url);
@@ -47,8 +53,7 @@ public class TrackingServiceImpl implements TrackingService {
         try {
             product = scrapingManager.scrapProduct(url);
         } catch (ProductNotFoundException ex) {
-            handleProductNotFound(ex);
-            return null;
+            throw new ScrapingProductFailedException(url);
         }
 
         TrackedItemRequestDto newTrackedItemRequestDto = TrackedItemRequestDto.builder()
@@ -64,7 +69,9 @@ public class TrackingServiceImpl implements TrackingService {
         return trackedItem;
     }
 
-    private void handleProductNotFound(ProductNotFoundException ex) {
-        return;
+    private TrackedItem updateTrackedItemListeners(String url, User newListener) {
+        TrackedItem trackedItem = trackedItemService.getTrackedItemByUrl(url);
+        trackedItem.addListener(newListener);
+        return trackedItemService.updateTrackedItem(trackedItem);
     }
 }

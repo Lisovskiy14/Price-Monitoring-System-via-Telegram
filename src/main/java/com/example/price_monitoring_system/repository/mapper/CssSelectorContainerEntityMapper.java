@@ -6,5 +6,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface CssSelectorContainerEntityMapper {
+    CssSelectorContainerEntity toCssSelectorContainerEntity(CssSelectorContainer cssSelectorContainer);
     CssSelectorContainer toCssSelectorContainer(CssSelectorContainerEntity cssSelectorContainerEntity);
 }

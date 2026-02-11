@@ -41,6 +41,11 @@ public class TrackedItemEntity {
     @Column(name = "last_checked", nullable = false)
     private LocalDateTime lastChecked;
 
-    @
-    private List<Long> listenerIds;
+    @ManyToMany
+    @JoinTable(
+            name = "items_users",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<UserEntity> listeners;
 }

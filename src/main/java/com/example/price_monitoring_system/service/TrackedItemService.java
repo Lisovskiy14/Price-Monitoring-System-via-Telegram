@@ -7,4 +7,5 @@ public interface TrackedItemService {
     boolean existsByUrl(String url);
     TrackedItem getTrackedItemByUrl(String url);
     TrackedItem saveTrackedItem(TrackedItemRequestDto trackedItemRequestDto);
+    TrackedItem updateTrackedItem(TrackedItem trackedItem);
 }

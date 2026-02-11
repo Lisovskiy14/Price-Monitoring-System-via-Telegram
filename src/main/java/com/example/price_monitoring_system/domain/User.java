@@ -5,8 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Shop {
+public class User {
     private Long id;
-    private String domain;
-    private CssSelectorContainer cssSelectorContainer;
 }

@@ -6,9 +6,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class PriceSnapshot {
+public class UpdatedProductSnapshot {
     private Long id;
     private TrackedItem trackedItem;
-    private BigDecimal currentPrice;
+    private BigDecimal previousPrice;
+    private boolean previousAvailable;
     private LocalDateTime timestamp;
 }

@@ -7,17 +7,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ProductManager {
+public class ScrapingManager {
 
     private final List<ProductProvider> providers;
 
-    public Product getProduct(String url) {
+    public Product scrapProduct(String url) {
         for (ProductProvider provider : providers) {
-            return provider.provide(url)
-                    .orElseThrow(() -> new ProductNotFoundException(url));
+            Optional<Product> productOpt = provider.provide(url);
+            if (productOpt.isPresent()) {
+                return productOpt.get();
+            }
         }
 
         throw new ProductNotFoundException(url);

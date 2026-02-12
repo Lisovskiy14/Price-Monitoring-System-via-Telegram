@@ -10,7 +10,6 @@ import com.example.price_monitoring_system.manager.exception.ProductNotFoundExce
 import com.example.price_monitoring_system.service.ShopService;
 import com.example.price_monitoring_system.service.TrackedItemService;
 import com.example.price_monitoring_system.service.TrackingService;
-import com.example.price_monitoring_system.service.exception.ScraperConnectionFailedException;
 import com.example.price_monitoring_system.service.exception.ScrapingProductFailedException;
 import com.example.price_monitoring_system.service.exception.ShopNotFoundException;
 import com.example.price_monitoring_system.utility.UrlDomainExtractor;
@@ -19,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.URI;
 
 @Slf4j
 @Service

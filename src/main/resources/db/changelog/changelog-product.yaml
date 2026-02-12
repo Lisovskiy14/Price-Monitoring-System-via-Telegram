@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: lisovskiy14
+      changes:
+
+        - createSequence:
+            sequenceName: products_seq
+            startValue: 1
+            incrementBy: 50
+            dataType: BIGINT
+
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueComputed: "nextval('products_seq')"
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: price
+                  type: NUMERIC(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: available
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false

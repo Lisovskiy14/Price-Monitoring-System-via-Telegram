@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: lisovskiy14
+      changes:
+
+        - createSequence:
+            sequenceName: shops_seq
+            startValue: 1
+            incrementBy: 50
+            dataType: BIGINT
+
+        - createTable:
+            tableName: shops
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueComputed: "nextval('shops_seq')"
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: domain
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: css_selector_container_id
+                  type: BIGINT
+
+        - addUniqueConstraint:
+            tableName: shops
+            columnNames: domain
+            constraintName: uq_shops_domain
+
+        - createSequence:
+            sequenceName: css_selector_containers_seq
+            startValue: 1
+            incrementBy: 50
+            dataType: BIGINT
+
+        - createTable:
+            tableName: css_selector_containers
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueComputed: "nextval('css_selector_containers_seq')"
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name_selector
+                  type: VARCHAR(255)
+              - column:
+                  name: description_selector
+                  type: VARCHAR(255)
+              - column:
+                  name: price_selector
+                  type: VARCHAR(255)
+              - column:
+                  name: availability_selector
+                  type: VARCHAR(255)
+
+        - addForeignKeyConstraint:
+            baseTableName: shops
+            baseColumnNames: css_selector_container_id
+            constraintName: fk_shops_css_selector_container_id
+            referencedTableName: css_selector_containers
+            referencedColumnNames: id

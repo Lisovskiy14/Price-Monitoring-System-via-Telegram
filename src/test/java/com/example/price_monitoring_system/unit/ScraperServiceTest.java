@@ -9,13 +9,13 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+//@SpringBootTest
 public class ScraperServiceTest {
 
     private final String cssSelector = ".product-price__big.text-2xl.font-bold.leading-none";
     private final String url = "https://rozetka.com.ua/ua/378359865/p378359865/";
 
-    @Autowired
+//    @Autowired
     private ScraperService scraperService;
 
     @Test

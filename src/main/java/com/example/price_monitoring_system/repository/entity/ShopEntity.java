@@ -13,10 +13,10 @@ import lombok.*;
 public class ShopEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shop_seq_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shops_seq_generator")
     @SequenceGenerator(
-            name = "shop_seq_generator",
-            sequenceName = "shop_seq"
+            name = "shops_seq_generator",
+            sequenceName = "shops_seq"
     )
     private Long id;
 

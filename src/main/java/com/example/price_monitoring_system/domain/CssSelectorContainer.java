@@ -1,5 +1,6 @@
 package com.example.price_monitoring_system.domain;
 
+import com.example.price_monitoring_system.utility.ToStringObjectParser;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,14 +8,19 @@ import lombok.Data;
 @Builder
 public class CssSelectorContainer {
     private Long id;
-    private String name;
-    private String description;
-    private String price;
-    private String availability;
+    private String nameSelector;
+    private String descriptionSelector;
+    private String priceSelector;
+    private String availabilitySelector;
 
     public boolean isEmpty() {
-        return name.isBlank() ||
-                price.isBlank() ||
-                availability.isBlank();
+        return nameSelector.isBlank() ||
+                priceSelector.isBlank() ||
+                availabilitySelector.isBlank();
+    }
+
+    @Override
+    public String toString() {
+        return ToStringObjectParser.parse(this);
     }
 }

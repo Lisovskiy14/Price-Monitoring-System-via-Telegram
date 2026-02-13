@@ -10,6 +10,7 @@ import com.example.price_monitoring_system.manager.exception.ProductNotFoundExce
 import com.example.price_monitoring_system.service.ShopService;
 import com.example.price_monitoring_system.service.TrackedItemService;
 import com.example.price_monitoring_system.service.TrackingService;
+import com.example.price_monitoring_system.service.UserService;
 import com.example.price_monitoring_system.service.exception.ScrapingProductFailedException;
 import com.example.price_monitoring_system.service.exception.ShopNotFoundException;
 import com.example.price_monitoring_system.utility.UrlDomainExtractor;
@@ -27,6 +28,7 @@ public class TrackingServiceImpl implements TrackingService {
     private final TrackedItemService trackedItemService;
     private final ScrapingManager scrapingManager;
     private final ShopService shopService;
+    private final UserService userService;
 
     @Override
     @Transactional
@@ -40,12 +42,8 @@ public class TrackingServiceImpl implements TrackingService {
         }
 
         String domain = UrlDomainExtractor.extractDomain(url);
-        Shop shop;
-        try {
-            shop = shopService.getShopByDomain(domain);
-        } catch (ShopNotFoundException ex) {
-            shop = shopService.saveShop(domain);
-        }
+        Shop shop = shopService.getShopByDomain(domain)
+                .orElseGet(() -> shopService.saveShop(domain));
 
         Product product;
         try {
@@ -54,14 +52,21 @@ public class TrackingServiceImpl implements TrackingService {
             throw new ScrapingProductFailedException(url);
         }
 
-        TrackedItemRequestDto newTrackedItemRequestDto = TrackedItemRequestDto.builder()
+        User listener = User.builder()
+                .id(trackedItemRequestDto.getListenerId())
+                .build();
+
+        listener = userService.saveUser(listener);
+
+        TrackedItem trackedItem = TrackedItem.builder()
                 .url(url)
                 .shop(shop)
                 .product(product)
-                .listenerId(trackedItemRequestDto.getListenerId())
+                .listeners(new java.util.ArrayList<>())
                 .build();
+        trackedItem.addListener(listener);
 
-        TrackedItem trackedItem = trackedItemService.saveTrackedItem(newTrackedItemRequestDto);
+        trackedItem = trackedItemService.saveTrackedItem(trackedItem);
         log.info("New TrackedItem was registered: {}", trackedItem);
 
         return trackedItem;

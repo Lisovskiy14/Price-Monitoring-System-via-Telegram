@@ -1,7 +1,9 @@
 package com.example.price_monitoring_system.domain;
 
+import com.example.price_monitoring_system.utility.ToStringObjectParser;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +28,6 @@ public class TrackedItem {
 
     @Override
     public String toString() {
-        return String.format("[%s : %s]", shop.getDomain(), product.getName());
+        return ToStringObjectParser.parse(this);
     }
 }

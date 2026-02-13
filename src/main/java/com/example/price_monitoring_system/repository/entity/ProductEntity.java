@@ -15,10 +15,10 @@ import java.math.BigDecimal;
 public class ProductEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_seq_generator")
     @SequenceGenerator(
-            name = "product_seq_generator",
-            sequenceName = "product_seq"
+            name = "products_seq_generator",
+            sequenceName = "products_seq"
     )
     private Long id;
 

@@ -12,12 +12,12 @@ import java.io.IOException;
 public class HtmlDocumentProvider {
 
     @Value("${scraping.user-agent}")
-    private static String USER_AGENT;
+    private String USER_AGENT;
 
     @Value("${scraping.timeout}")
-    private static int TIMEOUT;
+    private int TIMEOUT;
 
-    public static Document provideHtmlDoc(String url) {
+    public Document provideHtmlDoc(String url) {
         try {
             return Jsoup.connect(url)
                     .userAgent(USER_AGENT)

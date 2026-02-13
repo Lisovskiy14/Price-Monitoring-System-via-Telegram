@@ -3,7 +3,9 @@ package com.example.price_monitoring_system.manager;
 import com.example.price_monitoring_system.domain.Product;
 import com.example.price_monitoring_system.manager.exception.ProductNotFoundException;
 import com.example.price_monitoring_system.manager.provider.ProductProvider;
+import com.example.price_monitoring_system.utility.HtmlDocumentProvider;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,11 +15,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ScrapingManager {
 
+    private final HtmlDocumentProvider htmlDocumentProvider;
+
     private final List<ProductProvider> providers;
 
     public Product scrapProduct(String url) {
+        Document doc = htmlDocumentProvider.provideHtmlDoc(url);
+
         for (ProductProvider provider : providers) {
-            Optional<Product> productOpt = provider.provide(url);
+            Optional<Product> productOpt = provider.provide(url, doc);
             if (productOpt.isPresent()) {
                 return productOpt.get();
             }

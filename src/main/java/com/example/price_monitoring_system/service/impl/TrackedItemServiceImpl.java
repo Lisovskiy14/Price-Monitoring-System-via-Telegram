@@ -9,6 +9,7 @@ import com.example.price_monitoring_system.repository.mapper.TrackedItemEntityMa
 import com.example.price_monitoring_system.service.TrackedItemService;
 import com.example.price_monitoring_system.service.exception.TrackedItemNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,21 +38,9 @@ public class TrackedItemServiceImpl implements TrackedItemService {
 
     @Override
     @Transactional
-    public TrackedItem saveTrackedItem(TrackedItemRequestDto requestDto) {
-        TrackedItem trackedItem = TrackedItem.builder()
-                .product(requestDto.getProduct())
-                .shop(requestDto.getShop())
-                .url(requestDto.getUrl())
-                .listeners(new ArrayList<>())
-                .build();
-
-        trackedItem.addListener(User.builder()
-                .id(requestDto.getListenerId())
-                .build());
-
+    public TrackedItem saveTrackedItem(TrackedItem trackedItem) {
         TrackedItemEntity trackedItemEntity = trackedItemRepository.saveAndFlush(
                 trackedItemEntityMapper.toTrackedItemEntity(trackedItem));
-
         return trackedItemEntityMapper.toTrackedItem(trackedItemEntity);
     }
 

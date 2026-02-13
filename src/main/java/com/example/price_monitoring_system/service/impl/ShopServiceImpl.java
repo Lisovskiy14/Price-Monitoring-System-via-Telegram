@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -21,10 +23,9 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(readOnly = true)
-    public Shop getShopByDomain(String domain) {
-        ShopEntity shopEntity = shopRepository.findByDomain(domain)
-                .orElseThrow(() -> new ShopNotFoundException(domain));
-        return shopEntityMapper.toShop(shopEntity);
+    public Optional<Shop> getShopByDomain(String domain) {
+        return shopRepository.findByDomain(domain)
+                .map(shopEntityMapper::toShop);
     }
 
     @Override

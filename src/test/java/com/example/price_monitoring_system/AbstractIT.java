@@ -26,7 +26,7 @@ public abstract class AbstractIT {
 
     @DynamicPropertySource
     static void dynamicProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", () -> String.format("jdbc:postgresql://%s:%d/price_monitoring_db?options=-c%20timezone=UTC",
+        registry.add("spring.datasource.url", () -> String.format("jdbc:postgresql://%s:%d/price_monitoring_db?options=-c%%20timezone=UTC",
                 POSTGRES_CONTAINER.getHost(), POSTGRES_CONTAINER.getMappedPort(5432)));
         registry.add("spring.datasource.username", () -> "postgres");
         registry.add("spring.datasource.password", () -> "postgres");

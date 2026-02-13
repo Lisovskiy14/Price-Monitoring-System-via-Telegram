@@ -1,7 +1,5 @@
 package com.example.price_monitoring_system.repository.entity;
 
-import com.example.price_monitoring_system.domain.Product;
-import com.example.price_monitoring_system.domain.Shop;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,10 +17,10 @@ import java.util.List;
 public class TrackedItemEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tracked_item_seq_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tracked_items_seq_generator")
     @SequenceGenerator(
-            name = "tracked_item_seq_generator",
-            sequenceName = "tracked_item_seq"
+            name = "tracked_items_seq_generator",
+            sequenceName = "tracked_items_seq"
     )
     private Long id;
 

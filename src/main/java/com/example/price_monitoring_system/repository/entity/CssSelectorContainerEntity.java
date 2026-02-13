@@ -13,10 +13,10 @@ import lombok.*;
 public class CssSelectorContainerEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "css_selector_container_seq_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "css_selector_containers_seq_generator")
     @SequenceGenerator(
-            name = "css_selector_container_seq_generator",
-            sequenceName = "css_selector_container_seq"
+            name = "css_selector_containers_seq_generator",
+            sequenceName = "css_selector_containers_seq"
     )
     private Long id;
 

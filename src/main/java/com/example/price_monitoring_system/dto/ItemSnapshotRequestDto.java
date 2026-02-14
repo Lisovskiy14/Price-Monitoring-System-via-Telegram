@@ -8,6 +8,6 @@ import lombok.Value;
 @Value
 @Builder
 public class ItemSnapshotRequestDto {
-    TrackedItem trackedItem;
-    Product scrapedProduct;
+    TrackedItem oldTrackedItem;
+    Product newScrappedProduct;
 }

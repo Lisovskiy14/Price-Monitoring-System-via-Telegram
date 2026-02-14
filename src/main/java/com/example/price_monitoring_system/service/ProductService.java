@@ -1,9 +1,9 @@
 package com.example.price_monitoring_system.service;
 
-import com.example.price_monitoring_system.domain.TrackedItem;
-import com.example.price_monitoring_system.dto.TrackedItemRequestDto;
+import com.example.price_monitoring_system.domain.Product;
+
+import java.util.List;
 
 public interface ProductService {
-    TrackedItem getTrackedItemByUrl(String url);
-    TrackedItem saveTrackedItem(TrackedItemRequestDto trackedItemRequestDto);
+    List<Product> updateProducts(List<Product> products);
 }

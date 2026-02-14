@@ -44,8 +44,8 @@ public class PriceMonitoringScheduler {
                 }
 
                 ItemSnapshotRequestDto itemSnapshotRequestDto = ItemSnapshotRequestDto.builder()
-                        .trackedItem(trackedItem)
-                        .scrapedProduct(scrappedProduct)
+                        .oldTrackedItem(trackedItem)
+                        .newScrappedProduct(scrappedProduct)
                         .build();
 
                 itemSnapshotRequests.add(itemSnapshotRequestDto);

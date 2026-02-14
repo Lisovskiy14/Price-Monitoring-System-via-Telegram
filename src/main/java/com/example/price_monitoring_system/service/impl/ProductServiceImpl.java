@@ -1,17 +1,45 @@
 package com.example.price_monitoring_system.service.impl;
 
 import com.example.price_monitoring_system.domain.Product;
-import com.example.price_monitoring_system.manager.ScrapingManager;
+import com.example.price_monitoring_system.repository.ProductRepository;
+import com.example.price_monitoring_system.repository.entity.ProductEntity;
+import com.example.price_monitoring_system.repository.mapper.ProductEntityMapper;
+import com.example.price_monitoring_system.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl {
+public class ProductServiceImpl implements ProductService {
 
-    private final ScrapingManager scrapingManager;
+    private final ProductRepository productRepository;
+    private final ProductEntityMapper productEntityMapper;
 
-     public Product getProductByUrl(String url) {
-         return scrapingManager.scrapProduct(url);
-     }
+    @Override
+    @Transactional
+    public List<Product> updateProducts(List<Product> products) {
+        Map<Long, Product> scrappedProductMap = products.stream()
+                .collect(Collectors.toMap(Product::getId, product -> product));
+
+        List<ProductEntity> existingProductEntities = productRepository.findAllById(scrappedProductMap.keySet());
+
+        existingProductEntities.forEach(productEntity -> {
+            Product scrappedProduct = scrappedProductMap.get(productEntity.getId());
+            if (scrappedProduct != null) {
+                productEntity.setName(scrappedProduct.getName());
+                productEntity.setDescription(scrappedProduct.getDescription());
+                productEntity.setPrice(scrappedProduct.getPrice());
+                productEntity.setAvailable(scrappedProduct.isAvailable());
+            }
+        });
+
+        return existingProductEntities.stream()
+                .map(productEntityMapper::toProduct)
+                .toList();
+    }
 }

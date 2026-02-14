@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,14 @@ public class TrackedItemServiceImpl implements TrackedItemService {
     @Transactional(readOnly = true)
     public boolean existsByUrl(String url) {
         return trackedItemRepository.existsByUrl(url);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TrackedItem> getAllTrackedItems() {
+        return trackedItemRepository.findAll().stream()
+                .map(trackedItemEntityMapper::toTrackedItem)
+                .toList();
     }
 
     @Override

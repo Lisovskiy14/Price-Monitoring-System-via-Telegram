@@ -72,6 +72,11 @@ public class TrackingServiceImpl implements TrackingService {
         return trackedItem;
     }
 
+    @Override
+    public void checkTrackedItems() {
+
+    }
+
     private TrackedItem updateTrackedItemListeners(String url, User newListener) {
         TrackedItem trackedItem = trackedItemService.getTrackedItemByUrl(url);
         trackedItem.addListener(newListener);

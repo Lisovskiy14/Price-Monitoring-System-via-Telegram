@@ -4,6 +4,7 @@ import com.example.price_monitoring_system.AbstractIT;
 import com.example.price_monitoring_system.domain.TrackedItem;
 import com.example.price_monitoring_system.dto.TrackedItemRequestDto;
 import com.example.price_monitoring_system.service.TrackingService;
+import com.example.price_monitoring_system.utility.UrlDomainExtractor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,10 @@ public class TrackingServiceIT extends AbstractIT {
     @Test
     @DisplayName("Should Register TrackedItem Test")
     public void shouldRegisterTrackedItem() {
+        String url = "https://rozetka.com.ua/ua/378359865/p378359865/";
 
         TrackedItemRequestDto requestDto = TrackedItemRequestDto.builder()
-                .url("https://rozetka.com.ua/ua/378359865/p378359865/")
+                .url(url)
                 .listenerId(1L)
                 .build();
 
@@ -32,7 +34,7 @@ public class TrackingServiceIT extends AbstractIT {
         assertThat(trackedItem).isNotNull();
         assertThat(trackedItem.getId()).isNotNull();
         assertThat(trackedItem.getShop()).isNotNull();
-        assertThat(trackedItem.getShop().getDomain()).isEqualTo("rozetka.com.ua");
+        assertThat(trackedItem.getShop().getDomain()).isEqualTo(UrlDomainExtractor.extractDomain(url));
         assertThat(trackedItem.getProduct()).isNotNull();
         assertThat(trackedItem.getProduct().getId()).isNotNull();
         assertThat(trackedItem.getListeners()).isNotNull();

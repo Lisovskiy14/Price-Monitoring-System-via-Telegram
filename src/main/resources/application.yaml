@@ -2,6 +2,9 @@ spring:
   application:
     name: price_monitoring_system
 
+  main:
+    web-application-type: none
+
   jpa:
     show-sql: true
     open-in-view: false

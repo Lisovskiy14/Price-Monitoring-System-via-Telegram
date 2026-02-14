@@ -5,4 +5,5 @@ import com.example.price_monitoring_system.dto.TrackedItemRequestDto;
 
 public interface TrackingService {
     TrackedItem registerTrackedItem(TrackedItemRequestDto trackedItemRequestDto);
+    void checkTrackedItems();
 }

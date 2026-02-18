@@ -3,7 +3,6 @@ package com.example.price_monitoring_system.telegram;
 import com.example.price_monitoring_system.domain.TrackedItem;
 import com.example.price_monitoring_system.service.TrackingService;
 import com.example.price_monitoring_system.telegram.messageResolver.ResponseMessageResolver;
-import com.example.price_monitoring_system.telegram.messageResolver.impl.ResponseMessageResolverImpl;
 import com.example.price_monitoring_system.telegram.utils.TelegramResponseSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +36,7 @@ public class UpdateConsumer implements LongPollingSingleThreadUpdateConsumer {
         String url = message.getText().trim();
         if (urlValidator.isValid(url)) {
             processRegisterUrl(url, message.getChatId());
+            return;
         }
 
         String[] messageComponents = message.getText().split(" ");

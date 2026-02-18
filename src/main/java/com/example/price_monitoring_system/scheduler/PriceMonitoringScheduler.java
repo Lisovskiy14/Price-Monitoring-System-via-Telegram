@@ -28,7 +28,7 @@ public class PriceMonitoringScheduler {
     private final ItemSnapshotService itemSnapshotService;
     private final TelegramNotifier telegramNotifier;
 
-    @Scheduled(fixedRate = 1000 * 60 * 30)
+    @Scheduled(fixedRate = 1000 * 60 * 10)
     @Transactional
     public void monitorPricesTask() {
         log.info("Starting monitoring prices task...");
@@ -72,7 +72,8 @@ public class PriceMonitoringScheduler {
                 return;
             }
 
-            telegramNotifier.notifyAll(itemSnapshots);
+            telegramNotifier.notifyAll(itemSnapshotsToNotify);
+            log.info("Finished monitoring prices task.");
 
         } catch (RuntimeException ex) {
             log.error("Error during monitoring prices task: {}", ex.getMessage());
@@ -82,7 +83,7 @@ public class PriceMonitoringScheduler {
     private boolean hasDifferenceBetweenProducts(Product oldProduct, Product newProduct) {
         boolean newName = !oldProduct.getName().equals(newProduct.getName());
         boolean newDescription = !oldProduct.getDescription().equals(newProduct.getDescription());
-        boolean newPrice = !oldProduct.getPrice().equals(newProduct.getPrice());
+        boolean newPrice = oldProduct.getPrice().compareTo(newProduct.getPrice()) != 0;
         boolean newAvailable = !(oldProduct.isAvailable() == newProduct.isAvailable());
         return (newName || newDescription || newPrice || newAvailable);
     }

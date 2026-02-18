@@ -110,7 +110,7 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
     private String buildResponseTextOnRegister(TrackedItem trackedItem) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Ваш новий товар:\n");
+        sb.append("Ваш новий товар:\n\n");
         sb.append(buildItemInfo(trackedItem));
 
         return sb.toString();
@@ -122,9 +122,7 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
         Product product = trackedItem.getProduct();
         sb.append(product.getName());
         sb.append("\n");
-        sb.append(product.getDescription());
-        sb.append("\n");
-        sb.append("Ціна: ").append(product.getPrice()).append(" грн");
+        sb.append("Ціна: ").append(uaFormat.format(product.getPrice()));
         sb.append("\n");
         sb.append("Наявність: ").append(product.isAvailable());
 

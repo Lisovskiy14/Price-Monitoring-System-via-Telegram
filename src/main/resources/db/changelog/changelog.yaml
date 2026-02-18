@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changelog-user.yaml
   - include:
       file: db/changelog/changelog-tracked-item.yaml
+  - include:
+      file: db/changelog/changelog-item-snapshot.yaml

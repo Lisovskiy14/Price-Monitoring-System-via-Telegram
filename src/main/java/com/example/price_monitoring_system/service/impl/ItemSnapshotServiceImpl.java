@@ -9,6 +9,7 @@ import com.example.price_monitoring_system.repository.ProductRepository;
 import com.example.price_monitoring_system.repository.TrackedItemRepository;
 import com.example.price_monitoring_system.repository.entity.ItemSnapshotEntity;
 import com.example.price_monitoring_system.repository.entity.ProductEntity;
+import com.example.price_monitoring_system.repository.entity.TrackedItemEntity;
 import com.example.price_monitoring_system.repository.mapper.ItemSnapshotEntityMapper;
 import com.example.price_monitoring_system.repository.mapper.ProductEntityMapper;
 import com.example.price_monitoring_system.repository.mapper.TrackedItemEntityMapper;
@@ -38,10 +39,16 @@ public class ItemSnapshotServiceImpl implements ItemSnapshotService {
     @Override
     @Transactional
     public List<ItemSnapshot> saveItemSnapshots(List<ItemSnapshotRequestDto> itemSnapshotsRequests) {
-        List<Long> productIds = itemSnapshotsRequests.stream()
-                .map(req -> req.getNewScrappedProduct().getId())
-                .toList();
+        List<Long> productIds = new ArrayList<>();
+        List<Long> trackedItemIds = new ArrayList<>();
 
+        for (ItemSnapshotRequestDto request : itemSnapshotsRequests) {
+            productIds.add(request.getOldTrackedItem().getProduct().getId());
+            trackedItemIds.add(request.getOldTrackedItem().getId());
+        }
+
+        Map<Long, TrackedItemEntity> existingTrackedItems = trackedItemRepository.findAllById(trackedItemIds).stream()
+                .collect(Collectors.toMap(TrackedItemEntity::getId, trackedItemEntity -> trackedItemEntity));
         Map<Long, ProductEntity> existingProducts = productRepository.findAllById(productIds).stream()
                 .collect(Collectors.toMap(ProductEntity::getId, productEntity -> productEntity));
 
@@ -61,7 +68,7 @@ public class ItemSnapshotServiceImpl implements ItemSnapshotService {
             }
 
             ItemSnapshotEntity snapshot = ItemSnapshotEntity.builder()
-                    .trackedItem(trackedItemRepository.getReferenceById(oldItem.getId()))
+                    .trackedItem(existingTrackedItems.get(oldItem.getId()))
                     .previousPrice(oldItem.getProduct().getPrice())
                     .previousAvailable(oldItem.getProduct().isAvailable())
                     .build();
@@ -70,7 +77,7 @@ public class ItemSnapshotServiceImpl implements ItemSnapshotService {
         }
 
         log.info("Saving {} new item snapshots.", snapshotsToSave.size());
-        return itemSnapshotRepository.saveAll(snapshotsToSave).stream()
+        return itemSnapshotRepository.saveAllAndFlush(snapshotsToSave).stream()
                 .map(itemSnapshotEntityMapper::toItemSnapshot)
                 .toList();
     }

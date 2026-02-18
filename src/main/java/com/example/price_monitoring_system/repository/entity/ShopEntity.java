@@ -23,7 +23,11 @@ public class ShopEntity {
     @Column(name = "domain", nullable = false, unique = true)
     private String domain;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            orphanRemoval = true
+    )
     @JoinColumn(name = "css_selector_container_id")
     private CssSelectorContainerEntity cssSelectorContainer;
 

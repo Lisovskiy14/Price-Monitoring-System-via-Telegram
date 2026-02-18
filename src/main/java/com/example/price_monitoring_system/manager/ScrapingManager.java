@@ -19,16 +19,16 @@ public class ScrapingManager {
 
     private final List<ProductProvider> providers;
 
-    public Product scrapProduct(String url) {
+    public Optional<Product> scrapProduct(String url) {
         Document doc = htmlDocumentProvider.provideHtmlDoc(url);
 
         for (ProductProvider provider : providers) {
             Optional<Product> productOpt = provider.provide(url, doc);
             if (productOpt.isPresent()) {
-                return productOpt.get();
+                return productOpt;
             }
         }
 
-        throw new ProductNotFoundException(url);
+        return Optional.empty();
     }
 }

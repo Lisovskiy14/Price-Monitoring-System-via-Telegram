@@ -8,6 +8,7 @@ import java.util.List;
 public interface TrackedItemService {
     boolean existsByUrl(String url);
     List<TrackedItem> getAllTrackedItems();
+    List<TrackedItem> getTrackedItemsByListenerId(Long listenerId);
     TrackedItem getTrackedItemByUrl(String url);
     TrackedItem saveTrackedItem(TrackedItem trackedItem);
     TrackedItem updateTrackedItem(TrackedItem trackedItem);

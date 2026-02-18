@@ -9,8 +9,9 @@ import java.util.List;
 
 public interface ResponseMessageResolver {
     List<SendMessage> fromNotify(ItemSnapshot itemSnapshot);
+    List<SendMessage> fromStartCommand(Message message);
+    List<SendMessage> fromAllCommand(List<TrackedItem> trackedItems, Long chatId);
+    List<SendMessage> fromDefault(Message message);
     SendMessage fromRegister(TrackedItem trackedItem, Long chatId);
-    SendMessage fromStartCommand(Message message);
-    SendMessage fromDefault(Message message);
     SendMessage fromUnexpectedError(Long chatId);
 }

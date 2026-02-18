@@ -24,7 +24,7 @@ public class ItemSnapshotEntity {
     )
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "tracked_item_id")
     private TrackedItemEntity trackedItem;
 

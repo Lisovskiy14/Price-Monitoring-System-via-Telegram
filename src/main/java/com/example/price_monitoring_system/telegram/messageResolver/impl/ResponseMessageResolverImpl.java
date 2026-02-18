@@ -50,26 +50,71 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
     }
 
     @Override
-    public SendMessage fromStartCommand(Message message) {
+    public List<SendMessage> fromStartCommand(Message message) {
         String responseText = """
                 Привіт, я Слон Наглядач!
                 Я доглядаю за твоїми бажаними товарами, просто дай мені посилання.
                 """;
-        return SendMessage.builder()
-                .chatId(message.getChatId())
-                .text(responseText)
-                .build();
+        return List.of(
+                SendMessage.builder()
+                        .chatId(message.getChatId())
+                        .text(responseText)
+                        .build()
+        );
     }
 
     @Override
-    public SendMessage fromDefault(Message message) {
+    public List<SendMessage> fromAllCommand(List<TrackedItem> trackedItems, Long chatId) {
+        List<SendMessage> responses = new ArrayList<>();
+
+        if (trackedItems.isEmpty()) {
+            String responseText = """
+                    Ви поки що не надали жодного товару.
+                    """;
+            SendMessage response = SendMessage.builder()
+                    .chatId(chatId)
+                    .text(responseText)
+                    .build();
+
+            responses.add(response);
+            return responses;
+        }
+
+        String titleResponse = """
+                Звісно! Ось ваші товари:
+                """;
+        responses.add(
+                SendMessage.builder()
+                        .chatId(chatId)
+                        .text(titleResponse)
+                        .build()
+        );
+
+        trackedItems.forEach(trackedItem -> {
+            String itemInfo = buildItemInfo(trackedItem).toString();
+
+            SendMessage response = SendMessage.builder()
+                    .chatId(chatId)
+                    .text(itemInfo)
+                    .build();
+
+            responses.add(response);
+        });
+
+        return responses;
+    }
+
+    @Override
+    public List<SendMessage> fromDefault(Message message) {
         String responseText = """
                 Я вас не розумію.
                 """;
-        return SendMessage.builder()
-                .chatId(message.getChatId())
-                .text(responseText)
-                .build();
+        return List.of(
+                SendMessage.builder()
+                        .chatId(message.getChatId())
+                        .text(responseText)
+                        .build()
+        );
     }
 
     @Override
@@ -95,7 +140,7 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
             sb.append("Ціна на товар знизилась!");
             sb.append("\n");
             sb.append(String.format(
-                    "Попередня ціна - %s грн. Нова ціна - %s грн.",
+                    "Попередня ціна - %s грн.\nНова ціна - %s грн.",
                     uaFormat.format(previousPrice), uaFormat.format(currentPrice)));
         } else {
             sb.append("Товар знову в наявності!");

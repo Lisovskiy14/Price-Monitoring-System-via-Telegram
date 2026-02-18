@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -39,7 +40,13 @@ public class PriceMonitoringScheduler {
             List<ItemSnapshotRequestDto> itemSnapshotRequests = new ArrayList<>();
 
             allItems.forEach(trackedItem -> {
-                Product scrappedProduct = scrapingManager.scrapProduct(trackedItem.getUrl());
+
+                Optional<Product> scrappedProductOpt = scrapingManager.scrapProduct(trackedItem.getUrl());
+                if (scrappedProductOpt.isEmpty()) {
+                    return;
+                }
+
+                Product scrappedProduct = scrappedProductOpt.get();
 
                 if (!hasDifferenceBetweenProducts(trackedItem.getProduct(), scrappedProduct)) {
                     return;
@@ -68,7 +75,7 @@ public class PriceMonitoringScheduler {
                 }
             });
 
-            if (!itemSnapshotsToNotify.isEmpty()) {
+            if (itemSnapshotsToNotify.isEmpty()) {
                 return;
             }
 

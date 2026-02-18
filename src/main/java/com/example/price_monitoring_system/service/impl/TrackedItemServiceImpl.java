@@ -5,6 +5,7 @@ import com.example.price_monitoring_system.domain.User;
 import com.example.price_monitoring_system.dto.TrackedItemRequestDto;
 import com.example.price_monitoring_system.repository.TrackedItemRepository;
 import com.example.price_monitoring_system.repository.entity.TrackedItemEntity;
+import com.example.price_monitoring_system.repository.entity.UserEntity;
 import com.example.price_monitoring_system.repository.mapper.TrackedItemEntityMapper;
 import com.example.price_monitoring_system.service.TrackedItemService;
 import com.example.price_monitoring_system.service.exception.TrackedItemNotFoundException;
@@ -33,6 +34,14 @@ public class TrackedItemServiceImpl implements TrackedItemService {
     @Transactional(readOnly = true)
     public List<TrackedItem> getAllTrackedItems() {
         return trackedItemRepository.findAll().stream()
+                .map(trackedItemEntityMapper::toTrackedItem)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TrackedItem> getTrackedItemsByListenerId(Long listenerId) {
+        return trackedItemRepository.findAllByListenersId(listenerId).stream()
                 .map(trackedItemEntityMapper::toTrackedItem)
                 .toList();
     }

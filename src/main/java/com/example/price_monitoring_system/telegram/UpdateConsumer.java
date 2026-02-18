@@ -1,6 +1,7 @@
 package com.example.price_monitoring_system.telegram;
 
 import com.example.price_monitoring_system.domain.TrackedItem;
+import com.example.price_monitoring_system.service.TrackedItemService;
 import com.example.price_monitoring_system.service.TrackingService;
 import com.example.price_monitoring_system.telegram.messageResolver.ResponseMessageResolver;
 import com.example.price_monitoring_system.telegram.utils.TelegramResponseSender;
@@ -9,8 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateConsumer;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
+
+import java.util.List;
 
 
 @Slf4j
@@ -20,6 +24,7 @@ public class UpdateConsumer implements LongPollingSingleThreadUpdateConsumer {
 
     private final TelegramResponseSender sender;
     private final TrackingService trackingService;
+    private final TrackedItemService trackedItemService;
     private final ResponseMessageResolver responseMessageResolver;
     private final UrlValidator urlValidator;
 
@@ -42,14 +47,17 @@ public class UpdateConsumer implements LongPollingSingleThreadUpdateConsumer {
         String[] messageComponents = message.getText().split(" ");
         String command = messageComponents[0];
 
-        switch (command) {
-            case "/start":
-                sender.sendMessage(responseMessageResolver.fromStartCommand(message));
-                break;
-            default:
-                sender.sendMessage(responseMessageResolver.fromDefault(message));
-                break;
-        }
+        List<SendMessage> responses = switch (command) {
+            case "/start" -> responseMessageResolver.fromStartCommand(message);
+            case "/all" -> {
+                Long chatId = message.getChatId();
+                List<TrackedItem> trackedItems = trackedItemService.getTrackedItemsByListenerId(chatId);
+                yield responseMessageResolver.fromAllCommand(trackedItems, chatId);
+            }
+            default -> responseMessageResolver.fromDefault(message);
+        };
+
+        responses.forEach(sender::sendMessage);
     }
 
     private void processRegisterUrl(String url, Long chatId) {

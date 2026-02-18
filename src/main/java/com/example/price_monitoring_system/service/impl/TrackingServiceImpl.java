@@ -45,12 +45,8 @@ public class TrackingServiceImpl implements TrackingService {
         Shop shop = shopService.getShopByDomain(domain)
                 .orElseGet(() -> shopService.saveShop(domain));
 
-        Product product;
-        try {
-            product = scrapingManager.scrapProduct(url);
-        } catch (ProductNotFoundException ex) {
-            throw new ScrapingProductFailedException(url);
-        }
+        Product product = scrapingManager.scrapProduct(url)
+                .orElseThrow(() -> new ScrapingProductFailedException(url));
 
         User listener = User.builder()
                 .id(listenerId)

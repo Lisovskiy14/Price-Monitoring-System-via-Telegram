@@ -2,8 +2,8 @@ spring:
   application:
     name: price_monitoring_system
 
-  main:
-    web-application-type: none
+#  main:
+#    web-application-type: none
 
   jpa:
     show-sql: true
@@ -41,3 +41,12 @@ spring:
 scraping:
   user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
   timeout: 5000
+
+telegram:
+  bot:
+    token: ${BOT_TOKEN}
+    username: ${BOT_USERNAME}
+
+#logging:
+#  level:
+#    org.telegram.telegrambots: DEBUG

@@ -7,6 +7,7 @@ import com.example.price_monitoring_system.dto.ItemSnapshotRequestDto;
 import com.example.price_monitoring_system.manager.ScrapingManager;
 import com.example.price_monitoring_system.service.ItemSnapshotService;
 import com.example.price_monitoring_system.service.TrackedItemService;
+import com.example.price_monitoring_system.telegram.TelegramNotifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,6 +26,7 @@ public class PriceMonitoringScheduler {
     private final ScrapingManager scrapingManager;
     private final TrackedItemService trackedItemService;
     private final ItemSnapshotService itemSnapshotService;
+    private final TelegramNotifier telegramNotifier;
 
     @Scheduled(fixedRate = 1000 * 60 * 30)
     @Transactional
@@ -70,7 +72,7 @@ public class PriceMonitoringScheduler {
                 return;
             }
 
-            // Need to call NotificationService here.
+            telegramNotifier.notifyAll(itemSnapshots);
 
         } catch (RuntimeException ex) {
             log.error("Error during monitoring prices task: {}", ex.getMessage());

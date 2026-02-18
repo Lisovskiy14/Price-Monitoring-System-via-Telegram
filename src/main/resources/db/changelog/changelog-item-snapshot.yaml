@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: lisovskiy14
+      changes:
+
+        - createSequence:
+            sequenceName: item_snapshots_seq
+            startValue: 1
+            incrementBy: 50
+            dataType: BIGINT
+
+        - createTable:
+            tableName: item_snapshots
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueComputed: "nextval('item_snapshots_seq')"
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: tracked_item_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: previous_price
+                  type: NUMERIC(19, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: previous_available
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: item_snapshots
+            baseColumnNames: tracked_item_id
+            referencedTableName: tracked_items
+            referencedColumnNames: id
+            constraintName: fk_item_snapshots_tracked_item_id
+
+
+#                  Needs to specify all columns and foreign keys.
+#                  Then I need to update my scheduler to use notifications.
+#                  It would also be nice to have a convenient ResponseMessageResolver, also with error handling methods,
+#                                                                     and a convenient UpdateConsumer system in general.

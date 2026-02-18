@@ -32,9 +32,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.telegram:telegrambots-springboot-longpolling-starter:9.3.0'
+	implementation 'org.telegram:telegrambots-client:9.3.0'
 	implementation 'org.liquibase:liquibase-core'
 	implementation 'org.springframework.ai:spring-ai-jsoup-document-reader'
 	implementation 'org.mapstruct:mapstruct:1.6.3'
+	implementation 'commons-validator:commons-validator:1.10.1'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -45,7 +48,6 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-//	testImplementation 'org.springframework.ai:spring-ai-spring-boot-testcontainers'
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation 'org.testcontainers:postgresql'
 	testImplementation 'org.projectlombok:lombok'

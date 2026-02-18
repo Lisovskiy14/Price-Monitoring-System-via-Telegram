@@ -32,11 +32,13 @@ public class TrackingServiceImpl implements TrackingService {
 
     @Override
     @Transactional
-    public TrackedItem registerTrackedItem(TrackedItemRequestDto trackedItemRequestDto) {
-        String url = trackedItemRequestDto.getUrl();
+    public TrackedItem registerTrackedItem(String url, Long listenerId) {
+        String existerUrl = trackedItemService.getAllTrackedItems().getFirst().getUrl();
+        System.out.println(existerUrl + "\n" + url);
+
         if (trackedItemService.existsByUrl(url)) {
             User newListener = User.builder()
-                    .id(trackedItemRequestDto.getListenerId())
+                    .id(listenerId)
                     .build();
             return updateTrackedItemListeners(url, newListener);
         }
@@ -53,7 +55,7 @@ public class TrackingServiceImpl implements TrackingService {
         }
 
         User listener = User.builder()
-                .id(trackedItemRequestDto.getListenerId())
+                .id(listenerId)
                 .build();
 
         listener = userService.saveUser(listener);

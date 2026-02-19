@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.saveAndFlush(
                 userEntityMapper.toUserEntity(user));
 
-        log.info("New User with id {} was saved", userEntity.getId());
+        log.info("New listener '{}' was saved", userEntity.getId());
         return userEntityMapper.toUser(userEntity);
     }
 }

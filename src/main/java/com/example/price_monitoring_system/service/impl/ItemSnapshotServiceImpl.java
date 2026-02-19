@@ -39,6 +39,7 @@ public class ItemSnapshotServiceImpl implements ItemSnapshotService {
     @Override
     @Transactional
     public List<ItemSnapshot> saveItemSnapshots(List<ItemSnapshotRequestDto> itemSnapshotsRequests) {
+        log.info("Trying to save {} new ItemSnapshots...", itemSnapshotsRequests.size());
         List<Long> productIds = new ArrayList<>();
         List<Long> trackedItemIds = new ArrayList<>();
 
@@ -65,6 +66,7 @@ public class ItemSnapshotServiceImpl implements ItemSnapshotService {
                 productEntity.setDescription(scrapped.getDescription());
                 productEntity.setPrice(scrapped.getPrice());
                 productEntity.setAvailable(scrapped.isAvailable());
+                log.info("Product '{}' was updated", productId);
             }
 
             ItemSnapshotEntity snapshot = ItemSnapshotEntity.builder()
@@ -74,9 +76,10 @@ public class ItemSnapshotServiceImpl implements ItemSnapshotService {
                     .build();
 
             snapshotsToSave.add(snapshot);
+            log.info("New ItemSnapshot was created on TrackedItem: {}", snapshot.getTrackedItem().getUrl());
         }
 
-        log.info("Saving {} new item snapshots.", snapshotsToSave.size());
+        log.info("{} just created ItemSnapshots has been saved.", snapshotsToSave.size());
         return itemSnapshotRepository.saveAllAndFlush(snapshotsToSave).stream()
                 .map(itemSnapshotEntityMapper::toItemSnapshot)
                 .toList();

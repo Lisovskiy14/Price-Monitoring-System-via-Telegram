@@ -38,6 +38,7 @@ public class ShopServiceImpl implements ShopService {
         ShopEntity shopEntity = shopRepository.saveAndFlush(
                 shopEntityMapper.toShopEntity(shop));
 
+        log.info("New shop '{}' was saved", shopEntity.getDomain());
         return shopEntityMapper.toShop(shopEntity);
     }
 }

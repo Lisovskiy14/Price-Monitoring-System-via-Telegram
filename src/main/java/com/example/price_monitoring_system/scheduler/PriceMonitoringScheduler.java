@@ -32,7 +32,7 @@ public class PriceMonitoringScheduler {
     @Scheduled(fixedRate = 1000 * 60 * 10)
     @Transactional
     public void monitorPricesTask() {
-        log.info("Starting monitoring prices task...");
+        log.info("Starting Monitoring Prices Task...");
 
         List<TrackedItem> allItems = trackedItemService.getAllTrackedItems();
 
@@ -61,9 +61,11 @@ public class PriceMonitoringScheduler {
             });
 
             if (itemSnapshotRequests.isEmpty()) {
+                finishTask();
                 return;
             }
 
+            log.info("{} products must be updated.", itemSnapshotRequests.size());
             List<ItemSnapshot> itemSnapshots = itemSnapshotService.saveItemSnapshots(itemSnapshotRequests);
             List<ItemSnapshot> itemSnapshotsToNotify = new ArrayList<>();
 
@@ -76,14 +78,16 @@ public class PriceMonitoringScheduler {
             });
 
             if (itemSnapshotsToNotify.isEmpty()) {
+                finishTask();
                 return;
             }
 
+            log.info("Listeners must be notified for {} updated TrackedItems;", itemSnapshotsToNotify.size());
             telegramNotifier.notifyAll(itemSnapshotsToNotify);
-            log.info("Finished monitoring prices task.");
+            finishTask();
 
         } catch (RuntimeException ex) {
-            log.error("Error during monitoring prices task: {}", ex.getMessage());
+            log.error("Error during Monitoring Prices Task: {}", ex.getMessage());
         }
     }
 
@@ -104,5 +108,9 @@ public class PriceMonitoringScheduler {
 
     private boolean isCheaper(Product updatedProduct, BigDecimal previousPrice) {
         return updatedProduct.getPrice().compareTo(previousPrice) < 0;
+    }
+
+    private void finishTask() {
+        log.info("Monitoring Prices Task has been finished.");
     }
 }

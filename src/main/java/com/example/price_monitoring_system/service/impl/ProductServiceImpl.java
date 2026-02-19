@@ -6,6 +6,7 @@ import com.example.price_monitoring_system.repository.entity.ProductEntity;
 import com.example.price_monitoring_system.repository.mapper.ProductEntityMapper;
 import com.example.price_monitoring_system.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -35,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
                 productEntity.setDescription(scrappedProduct.getDescription());
                 productEntity.setPrice(scrappedProduct.getPrice());
                 productEntity.setAvailable(scrappedProduct.isAvailable());
+                log.info("Product '{}' was updated", productEntity.getId());
             }
         });
 

@@ -61,7 +61,7 @@ public class TrackingServiceImpl implements TrackingService {
         trackedItem.addListener(listener);
 
         trackedItem = trackedItemService.saveTrackedItem(trackedItem);
-        log.info("New TrackedItem was registered: {}", trackedItem);
+        log.info("New TrackedItem was registered: {}", trackedItem.getUrl());
 
         return RegistrationResult.builder()
                 .trackedItem(trackedItem)

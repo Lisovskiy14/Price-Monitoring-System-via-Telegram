@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TrackedItemServiceImpl implements TrackedItemService {
@@ -59,6 +60,7 @@ public class TrackedItemServiceImpl implements TrackedItemService {
     public TrackedItem saveTrackedItem(TrackedItem trackedItem) {
         TrackedItemEntity trackedItemEntity = trackedItemRepository.saveAndFlush(
                 trackedItemEntityMapper.toTrackedItemEntity(trackedItem));
+        log.info("Saved new TrackedItem: {}", trackedItemEntity.getUrl());
         return trackedItemEntityMapper.toTrackedItem(trackedItemEntity);
     }
 
@@ -67,6 +69,22 @@ public class TrackedItemServiceImpl implements TrackedItemService {
     public TrackedItem updateTrackedItem(TrackedItem trackedItem) {
         TrackedItemEntity trackedItemEntity = trackedItemRepository.saveAndFlush(
                 trackedItemEntityMapper.toTrackedItemEntity(trackedItem));
+        log.info("TrackedItem was updated: {}", trackedItemEntity.getUrl());
         return trackedItemEntityMapper.toTrackedItem(trackedItemEntity);
+    }
+
+    @Override
+    @Transactional
+    public void removeListenerFromTrackedItems(List<String> urls, Long listenerId) {
+        List<TrackedItemEntity> trackedItems = trackedItemRepository.findAllByUrlIn(urls);
+
+        if (trackedItems.isEmpty()) {
+            return;
+        }
+
+        trackedItems.forEach(trackedItem -> {
+            trackedItem.getListeners().removeIf(user -> user.getId().equals(listenerId));
+            log.info("Removed listener '{}' from TrackedItem: {}", listenerId, trackedItem.getUrl());
+        });
     }
 }

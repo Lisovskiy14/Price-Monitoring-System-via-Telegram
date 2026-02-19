@@ -4,15 +4,13 @@ import com.example.price_monitoring_system.domain.Product;
 import com.example.price_monitoring_system.domain.Shop;
 import com.example.price_monitoring_system.domain.TrackedItem;
 import com.example.price_monitoring_system.domain.User;
-import com.example.price_monitoring_system.dto.TrackedItemRequestDto;
+import com.example.price_monitoring_system.dto.RegistrationResult;
 import com.example.price_monitoring_system.manager.ScrapingManager;
-import com.example.price_monitoring_system.manager.exception.ProductNotFoundException;
 import com.example.price_monitoring_system.service.ShopService;
 import com.example.price_monitoring_system.service.TrackedItemService;
 import com.example.price_monitoring_system.service.TrackingService;
 import com.example.price_monitoring_system.service.UserService;
 import com.example.price_monitoring_system.service.exception.ScrapingProductFailedException;
-import com.example.price_monitoring_system.service.exception.ShopNotFoundException;
 import com.example.price_monitoring_system.utility.UrlDomainExtractor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +30,7 @@ public class TrackingServiceImpl implements TrackingService {
 
     @Override
     @Transactional
-    public TrackedItem registerTrackedItem(String url, Long listenerId) {
+    public RegistrationResult registerTrackedItem(String url, Long listenerId) {
 
         if (trackedItemService.existsByUrl(url)) {
             User newListener = User.builder()
@@ -65,20 +63,27 @@ public class TrackingServiceImpl implements TrackingService {
         trackedItem = trackedItemService.saveTrackedItem(trackedItem);
         log.info("New TrackedItem was registered: {}", trackedItem);
 
-        return trackedItem;
+        return RegistrationResult.builder()
+                .trackedItem(trackedItem)
+                .alreadyTracked(false)
+                .build();
     }
 
-    @Override
-    public void checkTrackedItems() {
-
-    }
-
-    private TrackedItem updateTrackedItemListeners(String url, User newListener) {
+    private RegistrationResult updateTrackedItemListeners(String url, User newListener) {
         TrackedItem trackedItem = trackedItemService.getTrackedItemByUrl(url);
+
         if (trackedItem.getListeners().contains(newListener)) {
-            return trackedItem;
+            return RegistrationResult.builder()
+                    .trackedItem(trackedItem)
+                    .alreadyTracked(true)
+                    .build();
         }
+
         trackedItem.addListener(newListener);
-        return trackedItemService.updateTrackedItem(trackedItem);
+        trackedItem = trackedItemService.updateTrackedItem(trackedItem);
+        return RegistrationResult.builder()
+                .trackedItem(trackedItem)
+                .alreadyTracked(false)
+                .build();
     }
 }

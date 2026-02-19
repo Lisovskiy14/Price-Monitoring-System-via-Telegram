@@ -1,6 +1,7 @@
 package com.example.price_monitoring_system.telegram.messageResolver.impl;
 
 import com.example.price_monitoring_system.domain.*;
+import com.example.price_monitoring_system.dto.RegistrationResult;
 import com.example.price_monitoring_system.telegram.messageResolver.ResponseMessageResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -41,8 +42,8 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
     }
 
     @Override
-    public SendMessage fromRegister(TrackedItem trackedItem, Long chatId) {
-        String responseText = buildResponseTextOnRegister(trackedItem);
+    public SendMessage fromRegister(RegistrationResult registrationResult, Long chatId) {
+        String responseText = buildResponseTextOnRegister(registrationResult);
         return SendMessage.builder()
                 .chatId(chatId)
                 .text(responseText)
@@ -128,6 +129,26 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
                 .build();
     }
 
+    @Override
+    public List<SendMessage> fromRemoveCommand(List<String> urls, Long chatId) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("З вашого списку було видалено наступні товари:");
+        sb.append("\n\n");
+
+        int i = 1;
+        for (String url : urls) {
+            sb.append(i++).append(". ").append(url).append("\n");
+        }
+
+        return List.of(
+                SendMessage.builder()
+                        .chatId(chatId)
+                        .text(sb.toString())
+                        .build()
+        );
+    }
+
     private String buildResponseTextOnNotify(ItemSnapshot itemSnapshot) {
         StringBuilder sb = new StringBuilder();
 
@@ -152,11 +173,17 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
         return sb.toString();
     }
 
-    private String buildResponseTextOnRegister(TrackedItem trackedItem) {
+    private String buildResponseTextOnRegister(RegistrationResult registrationResult) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Ваш новий товар:\n\n");
-        sb.append(buildItemInfo(trackedItem));
+        if (registrationResult.isAlreadyTracked()) {
+            sb.append("Ви вже слідкуєте за цим товаром:");
+        } else {
+            sb.append("Ваш новий товар:");
+        }
+
+        sb.append("\n\n");
+        sb.append(buildItemInfo(registrationResult.getTrackedItem()));
 
         return sb.toString();
     }

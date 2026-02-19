@@ -12,4 +12,5 @@ public interface TrackedItemService {
     TrackedItem getTrackedItemByUrl(String url);
     TrackedItem saveTrackedItem(TrackedItem trackedItem);
     TrackedItem updateTrackedItem(TrackedItem trackedItem);
+    void removeListenerFromTrackedItems(List<String> urls, Long listenerId);
 }

@@ -22,10 +22,6 @@ public class TrackedItem {
         listeners.add(user);
     }
 
-    public void removeListener(User user) {
-        listeners.remove(user);
-    }
-
     @Override
     public String toString() {
         return ToStringObjectParser.parse(this);

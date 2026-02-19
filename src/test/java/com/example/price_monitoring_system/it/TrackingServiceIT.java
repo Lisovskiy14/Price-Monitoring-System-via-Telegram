@@ -24,7 +24,7 @@ public class TrackingServiceIT extends AbstractIT {
     public void shouldRegisterTrackedItem() {
         String url = "https://rozetka.com.ua/ua/378359865/p378359865/";
 
-        TrackedItem trackedItem = trackingService.registerTrackedItem(url, 1L);
+        TrackedItem trackedItem = trackingService.registerTrackedItem(url, 1L).getTrackedItem();
 
         assertThat(trackedItem).isNotNull();
         assertThat(trackedItem.getId()).isNotNull();

@@ -63,6 +63,15 @@ dependencyManagement {
 	}
 }
 
+tasks.named('jar') {
+	enabled = false
+	archiveFileName = 'app.jar'
+}
+
+tasks.named('bootJar') {
+	archiveFileName = 'app.jar'
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

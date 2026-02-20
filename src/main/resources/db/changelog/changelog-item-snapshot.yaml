@@ -30,8 +30,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: previous_available
-                  type: BOOLEAN
+                  name: previous_availability
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:

@@ -21,6 +21,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User saveUser(User user) {
+        if (userRepository.existsById(user.getId())) {
+            return user;
+        }
+
         UserEntity userEntity = userRepository.saveAndFlush(
                 userEntityMapper.toUserEntity(user));
 

@@ -205,7 +205,7 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
         Availability availability = product.getAvailability();
         String availabilityMessage = messageSource.getMessage(
                 "availability." + availability.getValue(), null, locale);
-        sb.append("Наявність: ").append(availabilityMessage);
+        sb.append(availabilityMessage);
 
         sb.append("\n\n");
 

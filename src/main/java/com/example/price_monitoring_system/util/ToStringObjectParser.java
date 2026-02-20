@@ -1,4 +1,4 @@
-package com.example.price_monitoring_system.utility;
+package com.example.price_monitoring_system.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

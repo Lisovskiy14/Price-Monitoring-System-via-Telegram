@@ -1,6 +1,7 @@
 package com.example.price_monitoring_system.domain;
 
-import com.example.price_monitoring_system.utility.ToStringObjectParser;
+import com.example.price_monitoring_system.common.Availability;
+import com.example.price_monitoring_system.util.ToStringObjectParser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class Product {
     private String name;
     private String description;
     private BigDecimal price;
-    private boolean available;
+    private Availability availability;
 
     @Override
     public String toString() {

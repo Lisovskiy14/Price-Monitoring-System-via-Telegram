@@ -1,6 +1,6 @@
 package com.example.price_monitoring_system.domain;
 
-import com.example.price_monitoring_system.utility.ToStringObjectParser;
+import com.example.price_monitoring_system.util.ToStringObjectParser;
 import lombok.Builder;
 import lombok.Data;
 

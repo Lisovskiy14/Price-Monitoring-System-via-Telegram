@@ -11,16 +11,12 @@ import com.example.price_monitoring_system.repository.entity.ItemSnapshotEntity;
 import com.example.price_monitoring_system.repository.entity.ProductEntity;
 import com.example.price_monitoring_system.repository.entity.TrackedItemEntity;
 import com.example.price_monitoring_system.repository.mapper.ItemSnapshotEntityMapper;
-import com.example.price_monitoring_system.repository.mapper.ProductEntityMapper;
-import com.example.price_monitoring_system.repository.mapper.TrackedItemEntityMapper;
 import com.example.price_monitoring_system.service.ItemSnapshotService;
-import com.example.price_monitoring_system.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,14 +61,14 @@ public class ItemSnapshotServiceImpl implements ItemSnapshotService {
                 productEntity.setName(scrapped.getName());
                 productEntity.setDescription(scrapped.getDescription());
                 productEntity.setPrice(scrapped.getPrice());
-                productEntity.setAvailable(scrapped.isAvailable());
+                productEntity.setAvailability(scrapped.getAvailability());
                 log.info("Product '{}' was updated", productId);
             }
 
             ItemSnapshotEntity snapshot = ItemSnapshotEntity.builder()
                     .trackedItem(existingTrackedItems.get(oldItem.getId()))
                     .previousPrice(oldItem.getProduct().getPrice())
-                    .previousAvailable(oldItem.getProduct().isAvailable())
+                    .previousAvailability(oldItem.getProduct().getAvailability())
                     .build();
 
             snapshotsToSave.add(snapshot);

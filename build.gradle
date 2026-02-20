@@ -38,6 +38,7 @@ dependencies {
 	implementation 'org.springframework.ai:spring-ai-jsoup-document-reader'
 	implementation 'org.mapstruct:mapstruct:1.6.3'
 	implementation 'commons-validator:commons-validator:1.10.1'
+	implementation 'dev.akkinoc.util:yaml-resource-bundle:2.15.0'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'

@@ -1,5 +1,6 @@
 package com.example.price_monitoring_system.repository.entity;
 
+import com.example.price_monitoring_system.common.Availability;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,8 +32,9 @@ public class ItemSnapshotEntity {
     @Column(name = "previous_price", nullable = false)
     private BigDecimal previousPrice;
 
-    @Column(name = "previous_available", nullable = false)
-    private boolean previousAvailable;
+    @Column(name = "previous_availability", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Availability previousAvailability;
 
     @Column(name = "timestamp", nullable = false)
     @CreationTimestamp

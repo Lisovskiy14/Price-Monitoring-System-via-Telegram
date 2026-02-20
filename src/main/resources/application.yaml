@@ -24,9 +24,9 @@ spring:
       ddl-auto: none
 
   datasource:
-    url: jdbc:postgresql://db:5432/price_monitoring_db?options=-c%20timezone=UTC
-    username: postgres
-    password: postgres
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
     hikari:
       auto-commit: false
       connection-timeout: 30000
@@ -46,7 +46,3 @@ telegram:
   bot:
     token: ${BOT_TOKEN}
     username: ${BOT_USERNAME}
-
-#logging:
-#  level:
-#    org.telegram.telegrambots: DEBUG

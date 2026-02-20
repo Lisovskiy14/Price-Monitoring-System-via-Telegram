@@ -1,9 +1,8 @@
-package com.example.price_monitoring_system.manager;
+package com.example.price_monitoring_system.scraper;
 
 import com.example.price_monitoring_system.domain.Product;
-import com.example.price_monitoring_system.manager.exception.ProductNotFoundException;
-import com.example.price_monitoring_system.manager.provider.ProductProvider;
-import com.example.price_monitoring_system.utility.HtmlDocumentProvider;
+import com.example.price_monitoring_system.scraper.provider.ProductProvider;
+import com.example.price_monitoring_system.scraper.util.HtmlDocumentProvider;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;

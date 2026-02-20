@@ -2,9 +2,8 @@ package com.example.price_monitoring_system.it;
 
 import com.example.price_monitoring_system.AbstractIT;
 import com.example.price_monitoring_system.domain.TrackedItem;
-import com.example.price_monitoring_system.dto.TrackedItemRequestDto;
 import com.example.price_monitoring_system.service.TrackingService;
-import com.example.price_monitoring_system.utility.UrlDomainExtractor;
+import com.example.price_monitoring_system.util.UrlDomainExtractor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

@@ -1,13 +1,15 @@
 package com.example.price_monitoring_system.scheduler;
 
+import com.example.price_monitoring_system.common.Availability;
 import com.example.price_monitoring_system.domain.Product;
 import com.example.price_monitoring_system.domain.TrackedItem;
 import com.example.price_monitoring_system.domain.ItemSnapshot;
 import com.example.price_monitoring_system.dto.ItemSnapshotRequestDto;
-import com.example.price_monitoring_system.manager.ScrapingManager;
+import com.example.price_monitoring_system.scraper.ScrapingManager;
 import com.example.price_monitoring_system.service.ItemSnapshotService;
 import com.example.price_monitoring_system.service.TrackedItemService;
 import com.example.price_monitoring_system.telegram.TelegramNotifier;
+import com.example.price_monitoring_system.util.AvailabilityResolver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -71,7 +73,7 @@ public class PriceMonitoringScheduler {
 
             itemSnapshots.forEach(itemSnapshot -> {
                 Product updatedProduct = itemSnapshot.getTrackedItem().getProduct();
-                if (becomeAvailable(updatedProduct, itemSnapshot.isPreviousAvailable()) ||
+                if (becomeAvailable(updatedProduct.getAvailability(), itemSnapshot.getPreviousAvailability()) ||
                         isCheaper(updatedProduct, itemSnapshot.getPreviousPrice())) {
                     itemSnapshotsToNotify.add(itemSnapshot);
                 }
@@ -95,15 +97,12 @@ public class PriceMonitoringScheduler {
         boolean newName = !oldProduct.getName().equals(newProduct.getName());
         boolean newDescription = !oldProduct.getDescription().equals(newProduct.getDescription());
         boolean newPrice = oldProduct.getPrice().compareTo(newProduct.getPrice()) != 0;
-        boolean newAvailable = !(oldProduct.isAvailable() == newProduct.isAvailable());
+        boolean newAvailable = !(oldProduct.getAvailability().equals(newProduct.getAvailability()));
         return (newName || newDescription || newPrice || newAvailable);
     }
 
-    private boolean becomeAvailable(Product updatedProduct, boolean isPreviousAvailable) {
-        if (isPreviousAvailable) {
-            return false;
-        }
-        return updatedProduct.isAvailable();
+    private boolean becomeAvailable(Availability newAvailability, Availability prevAvailability) {
+        return AvailabilityResolver.becomeAvailable(newAvailability, prevAvailability);
     }
 
     private boolean isCheaper(Product updatedProduct, BigDecimal previousPrice) {

@@ -1,8 +1,8 @@
-package com.example.price_monitoring_system.manager.provider.impl;
+package com.example.price_monitoring_system.scraper.provider.impl;
 
 import com.example.price_monitoring_system.domain.Product;
-import com.example.price_monitoring_system.manager.provider.ProductProvider;
-import com.example.price_monitoring_system.utility.MetaDataProductParser;
+import com.example.price_monitoring_system.scraper.provider.ProductProvider;
+import com.example.price_monitoring_system.scraper.util.MetaDataProductParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

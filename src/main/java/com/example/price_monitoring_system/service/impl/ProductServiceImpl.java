@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
                 productEntity.setName(scrappedProduct.getName());
                 productEntity.setDescription(scrappedProduct.getDescription());
                 productEntity.setPrice(scrappedProduct.getPrice());
-                productEntity.setAvailable(scrappedProduct.isAvailable());
+                productEntity.setAvailability(scrappedProduct.getAvailability());
                 log.info("Product '{}' was updated", productEntity.getId());
             }
         });

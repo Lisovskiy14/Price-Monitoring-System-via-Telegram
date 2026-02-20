@@ -1,4 +1,4 @@
-package com.example.price_monitoring_system.manager.provider;
+package com.example.price_monitoring_system.scraper.provider;
 
 import com.example.price_monitoring_system.domain.Product;
 import org.jsoup.nodes.Document;

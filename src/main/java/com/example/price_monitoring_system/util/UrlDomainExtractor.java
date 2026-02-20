@@ -1,4 +1,4 @@
-package com.example.price_monitoring_system.utility;
+package com.example.price_monitoring_system.util;
 
 import java.net.URI;
 

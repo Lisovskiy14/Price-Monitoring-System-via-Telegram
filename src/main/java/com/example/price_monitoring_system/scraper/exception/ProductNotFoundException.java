@@ -1,4 +1,4 @@
-package com.example.price_monitoring_system.manager.exception;
+package com.example.price_monitoring_system.scraper.exception;
 
 public class ProductNotFoundException extends RuntimeException {
     private static final String CSS_SELECTOR_NOT_FOUND = "Css selector not found for url %s";

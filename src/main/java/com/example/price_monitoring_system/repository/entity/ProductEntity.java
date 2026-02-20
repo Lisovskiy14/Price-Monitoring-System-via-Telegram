@@ -1,5 +1,6 @@
 package com.example.price_monitoring_system.repository.entity;
 
+import com.example.price_monitoring_system.common.Availability;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,6 +32,7 @@ public class ProductEntity {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
-    @Column(name = "available", nullable = false)
-    private boolean available;
+    @Column(name = "availability", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Availability availability;
 }

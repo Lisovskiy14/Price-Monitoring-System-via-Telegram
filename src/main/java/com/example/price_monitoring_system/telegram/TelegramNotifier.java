@@ -2,7 +2,7 @@ package com.example.price_monitoring_system.telegram;
 
 import com.example.price_monitoring_system.domain.ItemSnapshot;
 import com.example.price_monitoring_system.telegram.messageResolver.ResponseMessageResolver;
-import com.example.price_monitoring_system.telegram.utils.TelegramResponseSender;
+import com.example.price_monitoring_system.telegram.util.TelegramResponseSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

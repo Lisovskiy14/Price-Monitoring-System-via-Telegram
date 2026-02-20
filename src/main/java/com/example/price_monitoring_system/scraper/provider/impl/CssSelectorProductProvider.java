@@ -1,15 +1,14 @@
-package com.example.price_monitoring_system.manager.provider.impl;
+package com.example.price_monitoring_system.scraper.provider.impl;
 
 import com.example.price_monitoring_system.domain.CssSelectorContainer;
 import com.example.price_monitoring_system.domain.Product;
 import com.example.price_monitoring_system.repository.ShopRepository;
 import com.example.price_monitoring_system.repository.entity.ShopEntity;
-import com.example.price_monitoring_system.utility.AvailabilityResolver;
-import com.example.price_monitoring_system.utility.HtmlDocumentProvider;
-import com.example.price_monitoring_system.manager.provider.ProductProvider;
+import com.example.price_monitoring_system.util.AvailabilityResolver;
+import com.example.price_monitoring_system.scraper.provider.ProductProvider;
 import com.example.price_monitoring_system.repository.entity.CssSelectorContainerEntity;
 import com.example.price_monitoring_system.repository.mapper.CssSelectorContainerEntityMapper;
-import com.example.price_monitoring_system.utility.UrlDomainExtractor;
+import com.example.price_monitoring_system.util.UrlDomainExtractor;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -74,7 +73,7 @@ public class CssSelectorProductProvider implements ProductProvider {
         field = doc.selectFirst(cssSelectorContainer.getAvailabilitySelector());
         if (field != null) {
             String url = field.data();
-            product.setAvailable(AvailabilityResolver.resolveByUrl(url));
+            product.setAvailability(AvailabilityResolver.resolveByUrl(url));
         }
 
         return product;

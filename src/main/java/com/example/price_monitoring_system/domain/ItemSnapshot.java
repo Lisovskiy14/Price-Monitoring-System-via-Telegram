@@ -1,5 +1,6 @@
 package com.example.price_monitoring_system.domain;
 
+import com.example.price_monitoring_system.common.Availability;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,6 +13,6 @@ public class ItemSnapshot {
     private Long id;
     private TrackedItem trackedItem;
     private BigDecimal previousPrice;
-    private boolean previousAvailable;
+    private Availability previousAvailability;
     private LocalDateTime timestamp;
 }

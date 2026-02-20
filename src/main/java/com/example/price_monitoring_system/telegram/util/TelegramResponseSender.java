@@ -1,7 +1,6 @@
-package com.example.price_monitoring_system.telegram.utils;
+package com.example.price_monitoring_system.telegram.util;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;

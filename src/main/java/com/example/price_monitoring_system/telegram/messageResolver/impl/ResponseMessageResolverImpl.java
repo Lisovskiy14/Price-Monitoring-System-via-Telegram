@@ -1,9 +1,11 @@
 package com.example.price_monitoring_system.telegram.messageResolver.impl;
 
+import com.example.price_monitoring_system.common.Availability;
 import com.example.price_monitoring_system.domain.*;
 import com.example.price_monitoring_system.dto.RegistrationResult;
 import com.example.price_monitoring_system.telegram.messageResolver.ResponseMessageResolver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
@@ -12,12 +14,15 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
 public class ResponseMessageResolverImpl implements ResponseMessageResolver {
 
     private final NumberFormat uaFormat;
+    private final MessageSource messageSource;
+    private final Locale locale;
 
     @Override
     public List<SendMessage> fromNotify(ItemSnapshot itemSnapshot) {
@@ -196,7 +201,11 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
         sb.append("\n");
         sb.append("Ціна: ").append(uaFormat.format(product.getPrice()));
         sb.append("\n");
-        sb.append("Наявність: ").append(product.isAvailable());
+
+        Availability availability = product.getAvailability();
+        String availabilityMessage = messageSource.getMessage(
+                "availability." + availability.getValue(), null, locale);
+        sb.append("Наявність: ").append(availabilityMessage);
 
         sb.append("\n\n");
 

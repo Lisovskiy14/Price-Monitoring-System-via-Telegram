@@ -1,13 +1,53 @@
-availability:
-  back-order: Попереднє замовлення
-  discontinued: Припинено
-  in-stock: В наявності
-  in-store-only: Тільки в магазині
-  limited-availability: Обмежений доступ
-  made-to-order: На замовлення
-  online-only: Тільки онлайн
-  out-of-stock: Немає в наявності
-  pre-order: Попереднє замовлення
-  pre-sale: Попередній продаж
-  reserved: Зарезервовано
-  sold-out: Продано
+welcome:
+  title: Привіт, я Слон Наглядач!
+  description: Я доглядаю за твоїми бажаними товарами, просто дай мені посилання.
+
+on-register:
+  already-tracked:
+    title: 'Ви вже слідкуєте за цим товаром:'
+  default:
+    title: 'Ваш новий товар:'
+
+
+command:
+  default:
+    title: Я вас не розумію.
+  all:
+    onEmpty:
+      title: Ви поки що не надали жодного товару.
+    default:
+      title: 'Звісно! Ось ваші товари:'
+  remove:
+    default:
+      title: 'З вашого списку було видалено наступні товари:'
+
+on-notify:
+  become-cheaper:
+    title: Ціна на товар знизилась!
+    details: 'Попередня ціна - {0} грн.\nНова ціна - {1} грн.'
+  become-available:
+    title: Товар знову в наявності!
+
+tracked-item:
+  product:
+    price-field: 'Ціна: '
+    availability:
+      back-order: Попереднє замовлення
+      discontinued: Припинено
+      in-stock: В наявності
+      in-store-only: Тільки в магазині
+      limited-availability: Обмежений доступ
+      made-to-order: На замовлення
+      online-only: Тільки онлайн
+      out-of-stock: Немає в наявності
+      pre-order: Попереднє замовлення
+      pre-sale: Попередній продаж
+      reserved: Зарезервовано
+      sold-out: Продано
+  shop:
+    domain-field: 'Магазин: '
+    url-field: 'Посилання: '
+
+error:
+  unexpected:
+    title: Сталась якась помилка. Схоже лупа зламалась...

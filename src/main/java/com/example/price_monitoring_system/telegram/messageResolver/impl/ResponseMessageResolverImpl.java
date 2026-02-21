@@ -57,10 +57,11 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
 
     @Override
     public List<SendMessage> fromStartCommand(Message message) {
-        String responseText = """
-                Привіт, я Слон Наглядач!
-                Я доглядаю за твоїми бажаними товарами, просто дай мені посилання.
-                """;
+        StringBuilder sb = new StringBuilder();
+        sb.append(messageSource.getMessage("welcome.title", null, locale));
+        sb.append("\n");
+        sb.append(messageSource.getMessage("welcome.description", null, locale));
+        String responseText = sb.toString();
         return List.of(
                 SendMessage.builder()
                         .chatId(message.getChatId())
@@ -74,9 +75,7 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
         List<SendMessage> responses = new ArrayList<>();
 
         if (trackedItems.isEmpty()) {
-            String responseText = """
-                    Ви поки що не надали жодного товару.
-                    """;
+            String responseText = messageSource.getMessage("command.all.onEmpty.title", null, locale);
             SendMessage response = SendMessage.builder()
                     .chatId(chatId)
                     .text(responseText)
@@ -86,9 +85,7 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
             return responses;
         }
 
-        String titleResponse = """
-                Звісно! Ось ваші товари:
-                """;
+        String titleResponse = messageSource.getMessage("command.all.default.title", null, locale);
         responses.add(
                 SendMessage.builder()
                         .chatId(chatId)
@@ -112,9 +109,7 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
 
     @Override
     public List<SendMessage> fromDefault(Message message) {
-        String responseText = """
-                Я вас не розумію.
-                """;
+        String responseText = messageSource.getMessage("command.default.title", null, locale);
         return List.of(
                 SendMessage.builder()
                         .chatId(message.getChatId())
@@ -125,9 +120,7 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
 
     @Override
     public SendMessage fromUnexpectedError(Long chatId) {
-        String responseText = """
-                Сталась якась помилка. Схоже лупа зламалась...
-                """;
+        String responseText = messageSource.getMessage("error.unexpected.title", null, locale);
         return SendMessage.builder()
                 .chatId(chatId)
                 .text(responseText)
@@ -138,7 +131,7 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
     public List<SendMessage> fromRemoveCommand(List<String> urls, Long chatId) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("З вашого списку було видалено наступні товари:");
+        sb.append(messageSource.getMessage("command.remove.default.title", null, locale));
         sb.append("\n\n");
 
         int i = 1;
@@ -163,13 +156,19 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
         BigDecimal currentPrice = product.getPrice();
         BigDecimal previousPrice = itemSnapshot.getPreviousPrice();
         if (currentPrice.compareTo(previousPrice) < 0) {
-            sb.append("Ціна на товар знизилась!");
+            sb.append(messageSource.getMessage("on-notify.become-cheaper.title", null, locale));
             sb.append("\n");
-            sb.append(String.format(
-                    "Попередня ціна - %s грн.\nНова ціна - %s грн.",
-                    uaFormat.format(previousPrice), uaFormat.format(currentPrice)));
+            String details = messageSource.getMessage(
+                    "on-notify.become-cheaper.details",
+                    new String[] {
+                            uaFormat.format(previousPrice),
+                            uaFormat.format(currentPrice)
+                    },
+                    locale
+            );
+            sb.append(details);
         } else {
-            sb.append("Товар знову в наявності!");
+            sb.append(messageSource.getMessage("on-notify.become-available.title", null, locale));
         }
 
         sb.append("\n\n");
@@ -182,9 +181,9 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
         StringBuilder sb = new StringBuilder();
 
         if (registrationResult.isAlreadyTracked()) {
-            sb.append("Ви вже слідкуєте за цим товаром:");
+            sb.append(messageSource.getMessage("on-register.already-tracked.title", null, locale));
         } else {
-            sb.append("Ваш новий товар:");
+            sb.append(messageSource.getMessage("on-register.default.title", null, locale));
         }
 
         sb.append("\n\n");
@@ -199,20 +198,23 @@ public class ResponseMessageResolverImpl implements ResponseMessageResolver {
         Product product = trackedItem.getProduct();
         sb.append(product.getName());
         sb.append("\n");
-        sb.append("Ціна: ").append(uaFormat.format(product.getPrice()));
+        sb.append(messageSource.getMessage("tracked-item.product.price-field", null, locale))
+                .append(uaFormat.format(product.getPrice()));
         sb.append("\n");
 
         Availability availability = product.getAvailability();
         String availabilityMessage = messageSource.getMessage(
-                "availability." + availability.getValue(), null, locale);
+                "tracked-item.product.availability." + availability.getValue(), null, locale);
         sb.append(availabilityMessage);
 
         sb.append("\n\n");
 
         Shop shop = trackedItem.getShop();
-        sb.append("Магазин: ").append(shop.getDomain());
+        sb.append(messageSource.getMessage("tracked-item.shop.domain-field", null, locale))
+                .append(shop.getDomain());
         sb.append("\n");
-        sb.append("Посилання: ").append(trackedItem.getUrl());
+        sb.append(messageSource.getMessage("tracked-item.shop.url-field", null, locale))
+                .append(trackedItem.getUrl());
 
         return sb;
     }

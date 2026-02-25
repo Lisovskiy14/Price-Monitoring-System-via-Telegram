@@ -25,14 +25,13 @@ public class TrackedItemEntity {
     private Long id;
 
     @OneToOne(
-            fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             orphanRemoval = true
     )
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "shop_id")
     private ShopEntity shop;
 
@@ -43,7 +42,7 @@ public class TrackedItemEntity {
     @Column(name = "last_checked", nullable = false)
     private LocalDateTime lastChecked;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "items_users",
             joinColumns = @JoinColumn(name = "item_id"),

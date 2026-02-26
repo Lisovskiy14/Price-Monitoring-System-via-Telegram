@@ -24,9 +24,9 @@ spring:
       ddl-auto: none
 
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: jdbc:postgresql://db:5432/price_monitoring_db?options=-c%20timezone=UTC
+    username: postgres
+    password: postgres
     hikari:
       auto-commit: false
       connection-timeout: 30000
